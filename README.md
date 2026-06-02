@@ -2,9 +2,11 @@
 Chess application with Qt.
 
 ![Typical App Screenshot](readme-img/chess-qt-example-1.png)
+
 # Prerequisites
 - OS: macOS Tahoe 26.5
 - Qt: 6.11.1
+
 # Build & Run
 Create Build Directory:
 ```bash\
@@ -25,3 +27,16 @@ Run App:
 Run Unit Test:
 ```bash\
 ./build/tests/unit_tests
+```
+
+# Features
+- Move Validation
+- Checkmate/Stalemate Detection
+- Move Recording
+- UI Highlight: Previous Move, Possible Move Options, King Check
+
+# TODO
+- Timer
+- 50-Move Rule
+- Threefold Repetition
+- FEN Display
