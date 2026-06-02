@@ -1,0 +1,25 @@
+#ifndef PROMOTE_DEFAULT_RENDERER_H
+#define PROMOTE_DEFAULT_RENDERER_H
+
+#include "IRenderer.hpp"
+
+class PromoteDefaultRenderer : public IRenderer
+{
+public:
+
+    PromoteDefaultRenderer(const QRect&, const QColor&, const QString&);
+    ~PromoteDefaultRenderer();
+    void render(QPainter&) override;
+    void resize(const QRect&) override;
+    void enter() override;
+    void leave() override;
+
+private:
+
+    QRect m_Rect;
+    const QColor m_Color;
+    const QString m_SvgFile;
+};
+
+#endif
+

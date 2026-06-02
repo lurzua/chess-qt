@@ -1,0 +1,16 @@
+<RCC>
+  <qresource prefix="/piece">
+    <file>img/white-pawn.svg</file>
+    <file>img/white-knight.svg</file>
+    <file>img/white-bishop.svg</file>
+    <file>img/white-rook.svg</file>
+    <file>img/white-queen.svg</file>
+    <file>img/white-king.svg</file>
+    <file>img/black-pawn.svg</file>
+    <file>img/black-knight.svg</file>
+    <file>img/black-bishop.svg</file>
+    <file>img/black-rook.svg</file>
+    <file>img/black-queen.svg</file>
+    <file>img/black-king.svg</file>
+  </qresource>
+</RCC>

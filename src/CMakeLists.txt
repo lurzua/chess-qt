@@ -1,0 +1,64 @@
+add_library(chess_lib
+    Bishop.cpp
+    Bishop.hpp
+    BoardView.cpp
+    BoardView.hpp
+    Controller.cpp
+    Controller.hpp
+    DefaultSquareRenderer.cpp
+    DefaultSquareRenderer.hpp
+    Enums.hpp
+    ForsythEdwardsNotation.cpp
+    ForsythEdwardsNotation.hpp
+    IRenderer.cpp
+    IRenderer.hpp
+    King.cpp
+    King.hpp
+    KingJaqueRenderer.cpp
+    KingJaqueRenderer.hpp
+    Knight.cpp
+    Knight.hpp
+    mainwindow.cpp
+    mainwindow.h
+    mainwindow.ui
+    Model.cpp
+    Model.hpp
+    MoveListView.cpp
+    MoveListView.hpp
+    Pawn.cpp
+    Pawn.hpp
+    Piece.cpp
+    Piece.hpp
+    Position.cpp
+    Position.hpp
+    PotentialSquareRenderer.cpp
+    PotentialSquareRenderer.hpp
+    PreviousMoveRenderer.cpp
+    PreviousMoveRenderer.hpp
+    PromoteDefaultRenderer.cpp
+    PromoteDefaultRenderer.hpp
+    PromoteOptionRenderer.cpp
+    PromoteOptionRenderer.hpp
+    Queen.cpp
+    Queen.hpp
+    Rook.cpp
+    Rook.hpp
+    SelectedPieceRenderer.cpp
+    SelectedPieceRenderer.hpp
+    SquareView.cpp
+    SquareView.hpp
+)
+
+target_link_libraries(chess_lib
+    PUBLIC
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::SvgWidgets
+)
+
+target_include_directories(chess_lib
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
