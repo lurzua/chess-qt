@@ -4,6 +4,8 @@ add_executable(unit_tests
     test_piece.hpp
     test_position.cpp
     test_position.hpp
+    test_fen.cpp
+    test_fen.hpp
     ../svg.qrc
 )
 

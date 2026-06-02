@@ -14,4 +14,3 @@ private slots:
     void test_change_position();
 };
 
-
