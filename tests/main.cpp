@@ -2,6 +2,7 @@
 
 #include "test_position.hpp"
 #include "test_piece.hpp"
+#include "test_fen.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -14,6 +15,11 @@ int main(int argc, char *argv[])
 
     {
         TestPiece tc;
+        status |= QTest::qExec(&tc, argc, argv);
+    }
+
+    {
+        TestFen tc;
         status |= QTest::qExec(&tc, argc, argv);
     }
 

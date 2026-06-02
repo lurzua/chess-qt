@@ -20,6 +20,7 @@ namespace
         void nextY();
         void prevX();
         void prevY();
+        QString toStr() const;
         static constexpr std::array<X, 8> g_ArrayX = { X::_A, X::_B, X::_C, X::_D, X::_E, X::_F, X::_G, X::_H };
         static constexpr std::array<Y, 8> g_ArrayY = { Y::_1, Y::_2, Y::_3, Y::_4, Y::_5, Y::_6, Y::_7, Y::_8 };
     };
@@ -74,9 +75,8 @@ bool isValidFEN(const QString& _fen)
 {
     // Check 1 whitespace character between each field for a total of 5 whitespace characters and 6 fields
     static const QRegularExpression re(R"(^\S+(\s\S+){5}$)");
-    g_BoardMap.clear();
 
-    if (re.match(_fen).hasMatch())
+    if (!re.match(_fen).hasMatch())
         return false;
 
     const auto fen_fields = _fen.split(' ');
@@ -110,6 +110,7 @@ bool isValidFEN(const QString& _fen)
     if (!isCorrectNumberOfPieces(piece_placement))
         return false;
 
+    g_BoardMap.clear();
     // parse and define g_BoardMap;
     using X = XY::X;
     using Y = XY::Y;
@@ -122,27 +123,28 @@ bool isValidFEN(const QString& _fen)
         {
             if (square.isDigit())
             {
-                const auto num_empty_squares = square.toLatin1() - '0';
+                const auto num_empty_squares = square.digitValue();
                 for (auto i = 0; i < num_empty_squares; i++)
                 {
-                    g_BoardMap.insert({ current_xy, ::std::nullopt });
+                    g_BoardMap.insert({ current_xy, std::nullopt });
+                    current_xy.nextX();
                 }
             }
             else if (square.isLetter())
             {
                 const auto piece_color = (square.isUpper()) ? PieceColor::White : PieceColor::Black;
                 if (square.toLatin1() == 'P' or square.toLatin1() == 'p')
-                    g_BoardMap.insert({ current_xy, ::std::make_tuple(piece_color, PieceType::Pawn) });
+                    g_BoardMap.insert({ current_xy, std::make_tuple(piece_color, PieceType::Pawn) });
                 else if (square.toLatin1() == 'N' or square.toLatin1() == 'n')
-                    g_BoardMap.insert({ current_xy, ::std::make_tuple(piece_color, PieceType::Knight) });
+                    g_BoardMap.insert({ current_xy, std::make_tuple(piece_color, PieceType::Knight) });
                 else if (square.toLatin1() == 'B' or square.toLatin1() == 'b')
-                    g_BoardMap.insert({ current_xy, ::std::make_tuple(piece_color, PieceType::Bishop) });
+                    g_BoardMap.insert({ current_xy, std::make_tuple(piece_color, PieceType::Bishop) });
                 else if (square.toLatin1() == 'R' or square.toLatin1() == 'r')
-                    g_BoardMap.insert({ current_xy, ::std::make_tuple(piece_color, PieceType::Rook) });
+                    g_BoardMap.insert({ current_xy, std::make_tuple(piece_color, PieceType::Rook) });
                 else if (square.toLatin1() == 'Q' or square.toLatin1() == 'q')
-                    g_BoardMap.insert({ current_xy, ::std::make_tuple(piece_color, PieceType::Queen) });
+                    g_BoardMap.insert({ current_xy, std::make_tuple(piece_color, PieceType::Queen) });
                 else if (square.toLatin1() == 'K' or square.toLatin1() == 'k')
-                    g_BoardMap.insert({ current_xy, ::std::make_tuple(piece_color, PieceType::King) });
+                    g_BoardMap.insert({ current_xy, std::make_tuple(piece_color, PieceType::King) });
                 else 
                     Q_UNREACHABLE();
 
@@ -155,6 +157,8 @@ bool isValidFEN(const QString& _fen)
         current_xy.m_X = X::_A;
         current_xy.prevY();
     }
+
+    Q_ASSERT(g_BoardMap.size() == 64);
 
     if (isIncorrectKingInCheck(active_color))
     {
@@ -548,7 +552,7 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
                 const auto& [ pcolor, ptype ] = square.value();
                 if (pcolor != _kcolor)
                 {
-                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                    if (ptype == PieceType::Knight)
                         num_attackers++;
                 }
             }
@@ -564,7 +568,7 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
                 const auto& [ pcolor, ptype ] = square.value();
                 if (pcolor != _kcolor)
                 {
-                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                    if (ptype == PieceType::Knight)
                         num_attackers++;
                 }
             }
@@ -582,7 +586,7 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
                 const auto& [ pcolor, ptype ] = square.value();
                 if (pcolor != _kcolor)
                 {
-                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                    if (ptype == PieceType::Knight)
                         num_attackers++;
                 }
             }
@@ -598,7 +602,7 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
                 const auto& [ pcolor, ptype ] = square.value();
                 if (pcolor != _kcolor)
                 {
-                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                    if (ptype == PieceType::Knight)
                         num_attackers++;
                 }
             }
@@ -616,7 +620,7 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
                 const auto& [ pcolor, ptype ] = square.value();
                 if (pcolor != _kcolor)
                 {
-                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                    if (ptype == PieceType::Knight)
                         num_attackers++;
                 }
             }
@@ -632,7 +636,7 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
                 const auto& [ pcolor, ptype ] = square.value();
                 if (pcolor != _kcolor)
                 {
-                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                    if (ptype == PieceType::Knight)
                         num_attackers++;
                 }
             }
@@ -671,6 +675,7 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
                 }
             }
         }
+
     }
 
     { // Check for Pawn Attackers to the king
@@ -878,6 +883,69 @@ void XY::prevY()
         m_Y = Y::_7;
         break;
     }
+}
+
+QString XY::toStr() const
+{
+    QString str;
+
+    switch (m_X)
+    {
+    case X::_A:
+        str += "A";
+        break;
+    case X::_B:
+        str += "B";
+        break;
+    case X::_C:
+        str += "C";
+        break;
+    case X::_D:
+        str += "D";
+        break;
+    case X::_E:
+        str += "E";
+        break;
+    case X::_F:
+        str += "F";
+        break;
+    case X::_G:
+        str += "G";
+        break;
+    case X::_H:
+        str += "H";
+        break;
+    }
+
+    switch (m_Y)
+    {
+    case Y::_1:
+        str += "1";
+        break;
+    case Y::_2:
+        str += "2";
+        break;
+    case Y::_3:
+        str += "3";
+        break;
+    case Y::_4:
+        str += "4";
+        break;
+    case Y::_5:
+        str += "5";
+        break;
+    case Y::_6:
+        str += "6";
+        break;
+    case Y::_7:
+        str += "7";
+        break;
+    case Y::_8:
+        str += "8";
+        break;
+    }
+
+    return str;
 }
 
 }
