@@ -40,3 +40,7 @@ Run Unit Test:
 - 50-Move Rule
 - Threefold Repetition
 - FEN Display
+- Drag & Drop Pieces
+
+# Showcase
+![App Functionality](readme-img/chess-qt-example-2.gif)
