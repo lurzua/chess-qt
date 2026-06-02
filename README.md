@@ -1,5 +1,5 @@
 # chess-qt
-Chess application with Qt.
+Bare bones Qt chess application. Validates moves according to the standard rule set including but not limited to: castling, pawn promotion, enpassant. UI is borrowed and/or modeled from lichess. 
 
 ![Typical App Screenshot](readme-img/chess-qt-example-1.png)
 
@@ -30,7 +30,8 @@ Run Unit Test:
 ```
 
 # Features
-- Move Validation
+- Move Validation: Legal Move, Legal Capture
+- Special Moves: Castling, Pawn Promotion, Enpassant
 - Checkmate/Stalemate Detection
 - Move Recording
 - UI Highlight: Previous Move, Possible Move Options, King Check
