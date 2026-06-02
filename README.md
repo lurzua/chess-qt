@@ -1,5 +1,7 @@
 # chess-qt
 Chess application with Qt.
+
+![Typical App Screenshot](readme-img/chess-qt-example-1.png)
 # Prerequisites
 - OS: macOS Tahoe 26.5
 - Qt: 6.11.1
