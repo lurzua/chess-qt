@@ -12,6 +12,7 @@ Model::Model(Logger& _logger)
     : QObject{ nullptr }
     , m_Logger(_logger)
 {
+    setObjectName("Model");
     initChessMap();
     initPieces();
     setPiecesOnChessMap();

@@ -5,13 +5,15 @@
 #include <QTableWidget>
 #include "Enums.hpp"
 
+class Logger;
+
 class MoveListView : public QTableWidget
 {
     Q_OBJECT
 
 public:
 
-    explicit MoveListView(QWidget *parent = nullptr);
+    MoveListView(Logger&);
     ~MoveListView();
 
 private:
@@ -34,6 +36,7 @@ public slots:
 private:
     
     QTableWidgetItem* last_item_hovered = nullptr;
+    Logger& m_Logger;
 };
 
 #endif

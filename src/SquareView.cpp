@@ -78,6 +78,7 @@ void SquareView::init()
     setMinimumSize(min);
     setMaximumSize(max);
     setSizePolicy(policy);
+    setObjectName("SquareView_" + m_Pos.toStr());
 }
 
 void SquareView::updateSvgFile(const Color& _color, const Type& _type)

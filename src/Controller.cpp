@@ -6,7 +6,9 @@
 Controller::Controller(Logger& _logger)
     : QObject{ nullptr }
     , m_Logger(_logger)
-{}
+{
+    setObjectName("Controller");
+}
 
 void Controller::receiveChessMap(ChessMapConst& _map)
 {

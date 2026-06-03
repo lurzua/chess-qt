@@ -33,7 +33,7 @@ void MainWindow::initBoard()
 
 void MainWindow::initMoveList()
 {
-    m_MoveListView = new MoveListView(nullptr);
+    m_MoveListView = new MoveListView(m_Logger);
 }
 
 void MainWindow::initRootLayout()
