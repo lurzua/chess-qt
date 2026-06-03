@@ -79,6 +79,7 @@ bool isValidFEN(const QString& _fen)
     if (!re.match(_fen).hasMatch())
         return false;
 
+
     const auto fen_fields = _fen.split(' ');
     if (fen_fields.size() != 6)
         return false;
@@ -103,12 +104,14 @@ bool isValidFEN(const QString& _fen)
         return false;
     if (!isHalfMoveClockSyntaxValid(half_move_clock))
         return false;
+
     if (isPawnOnFirstOrLastRank(piece_placement))
         return false;
     if (!isOneKingOnly(piece_placement))
         return false;
     if (!isCorrectNumberOfPieces(piece_placement))
         return false;
+
 
     g_BoardMap.clear();
     // parse and define g_BoardMap;
@@ -341,7 +344,7 @@ bool isOneKingOnly(const QString& _piece_placement)
     {
         if (r.contains('K'))
             wkings++;
-        else if (r.contains('k'))
+        if (r.contains('k'))
             bkings++;
     }
 
@@ -361,10 +364,19 @@ bool isCorrectNumberOfPieces(const QString& _piece_placement)
     auto bpieces = 0;
     for (const auto& r : rows)
     {
-        if (r.contains('P') or r.contains('N') or r.contains('B') or r.contains('R') or r.contains('Q') or r.contains('K'))
-            wpieces++;
-        else if (r.contains('p') or r.contains('n') or r.contains('b') or r.contains('r') or r.contains('q') or r.contains('k'))
-            bpieces++;
+        wpieces += r.count('P');
+        wpieces += r.count('N');
+        wpieces += r.count('B');
+        wpieces += r.count('R');
+        wpieces += r.count('Q');
+        wpieces += r.count('K');
+
+        bpieces += r.count('p');
+        bpieces += r.count('n');
+        bpieces += r.count('b');
+        bpieces += r.count('r');
+        bpieces += r.count('q');
+        bpieces += r.count('k');
     }
 
     if (wpieces > 16)
@@ -424,10 +436,13 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
             if (const auto& square = g_BoardMap.at(current_xy_left); square.has_value())
             {
                 const auto& [ pcolor, ptype ] = square.value();
-                if (pcolor == _kcolor)
-                    break;
-                if (ptype == PieceType::Rook or ptype == PieceType::Queen)
-                    num_attackers++;
+                if (pcolor != _kcolor)
+                {
+                    if (ptype == PieceType::Rook or ptype == PieceType::Queen)
+                        num_attackers++;
+                }
+
+                break;
             }
         }
     }
@@ -439,10 +454,13 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
             if (const auto& square = g_BoardMap.at(current_xy_right); square.has_value())
             {
                 const auto& [ pcolor, ptype ] = square.value();
-                if (pcolor == _kcolor)
-                    break;
-                if (ptype == PieceType::Rook or ptype == PieceType::Queen)
-                    num_attackers++;
+                if (pcolor != _kcolor)
+                {
+                    if (ptype == PieceType::Rook or ptype == PieceType::Queen)
+                        num_attackers++;
+                }
+
+                break;
             }
         }
     }
@@ -454,10 +472,13 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
             if (const auto& square = g_BoardMap.at(current_xy_north); square.has_value())
             {
                 const auto& [ pcolor, ptype ] = square.value();
-                if (pcolor == _kcolor)
-                    break;
-                if (ptype == PieceType::Rook or ptype == PieceType::Queen)
-                    num_attackers++;
+                if (pcolor != _kcolor)
+                {
+                    if (ptype == PieceType::Rook or ptype == PieceType::Queen)
+                        num_attackers++;
+                }
+
+                break;
             }
         }
     }
@@ -469,10 +490,13 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
             if (const auto& square = g_BoardMap.at(current_xy_south); square.has_value())
             {
                 const auto& [ pcolor, ptype ] = square.value();
-                if (pcolor == _kcolor)
-                    break;
-                if (ptype == PieceType::Rook or ptype == PieceType::Queen)
-                    num_attackers++;
+                if (pcolor != _kcolor)
+                {
+                    if (ptype == PieceType::Rook or ptype == PieceType::Queen)
+                        num_attackers++;
+                }
+
+                break;
             }
         }
     }
@@ -485,10 +509,13 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
             if (const auto& square = g_BoardMap.at(current_xy_nw); square.has_value())
             {
                 const auto& [ pcolor, ptype ] = square.value();
-                if (pcolor == _kcolor)
-                    break;
-                if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
-                    num_attackers++;
+                if (pcolor != _kcolor)
+                {
+                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                        num_attackers++;
+                }
+
+                break;
             }
         }
     }
@@ -501,10 +528,13 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
             if (const auto& square = g_BoardMap.at(current_xy_ne); square.has_value())
             {
                 const auto& [ pcolor, ptype ] = square.value();
-                if (pcolor == _kcolor)
-                    break;
-                if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
-                    num_attackers++;
+                if (pcolor != _kcolor)
+                {
+                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                        num_attackers++;
+                }
+
+                break;
             }
         }
     }
@@ -517,10 +547,13 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
             if (const auto& square = g_BoardMap.at(current_xy_se); square.has_value())
             {
                 const auto& [ pcolor, ptype ] = square.value();
-                if (pcolor == _kcolor)
-                    break;
-                if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
-                    num_attackers++;
+                if (pcolor != _kcolor)
+                {
+                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                        num_attackers++;
+                }
+
+                break;
             }
         }
     }
@@ -533,10 +566,13 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
             if (const auto& square = g_BoardMap.at(current_xy_sw); square.has_value())
             {
                 const auto& [ pcolor, ptype ] = square.value();
-                if (pcolor == _kcolor)
-                    break;
-                if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
-                    num_attackers++;
+                if (pcolor != _kcolor)
+                {
+                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                        num_attackers++;
+                }
+
+                break;
             }
         }
     }
@@ -644,7 +680,7 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
     }
 
     { // Check for Knight Attackers to the East of king 
-        if (auto current_xy_east_up = king_xy; current_xy_east_up.m_X > X::_B && current_xy_east_up.m_Y < Y::_8)
+        if (auto current_xy_east_up = king_xy; current_xy_east_up.m_X < X::_G && current_xy_east_up.m_Y < Y::_8)
         {
             current_xy_east_up.nextX();
             current_xy_east_up.nextX();
@@ -654,13 +690,13 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
                 const auto& [ pcolor, ptype ] = square.value();
                 if (pcolor != _kcolor)
                 {
-                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                    if (ptype == PieceType::Knight)
                         num_attackers++;
                 }
             }
         }
  
-        if (auto current_xy_east_down = king_xy; current_xy_east_down.m_X > X::_B && current_xy_east_down.m_Y > Y::_1)
+        if (auto current_xy_east_down = king_xy; current_xy_east_down.m_X < X::_G && current_xy_east_down.m_Y > Y::_1)
         {
             current_xy_east_down.nextX();
             current_xy_east_down.nextX();
@@ -670,7 +706,7 @@ uint8_t howManyKingAttackers(const PieceColor& _kcolor)
                 const auto& [ pcolor, ptype ] = square.value();
                 if (pcolor != _kcolor)
                 {
-                    if (ptype == PieceType::Bishop or ptype == PieceType::Queen)
+                    if (ptype == PieceType::Knight)
                         num_attackers++;
                 }
             }

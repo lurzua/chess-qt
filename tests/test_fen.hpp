@@ -12,5 +12,6 @@ private slots:
     void test_castling_rights();
     void test_without_white_king();
     void test_without_black_king();
+    void test_lichess_puzzle_db_fen();
 };
 

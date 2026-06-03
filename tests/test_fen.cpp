@@ -1,5 +1,7 @@
 #include "test_fen.hpp"
 #include "ForsythEdwardsNotation.hpp"
+#include <fstream>
+#include <string>
 
 void TestFen::test_default_fen()
 {
@@ -11,8 +13,10 @@ void TestFen::test_default_fen()
 
 void TestFen::test_castling_rights()
 {
+    const auto piece_placement = QString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR");
+
     {
-        const auto without_castling_rights = QString("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1");
+        const auto without_castling_rights = piece_placement + QString(" w - - 0 1");
         QVERIFY(isValidFEN(without_castling_rights));
     }
 
@@ -96,5 +100,30 @@ void TestFen::test_without_black_king()
         const auto without_black_king = QString("rnbqqbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1");
         QVERIFY(!isValidFEN(without_black_king));
     }
+}
+
+    
+void TestFen::test_lichess_puzzle_db_fen()
+{
+    if (std::ifstream puzzle_db_fen("data/lichess-db-sample-fen.csv"); puzzle_db_fen.is_open())
+    {
+        std::string line;
+
+        while (std::getline(puzzle_db_fen, line))
+        {
+            size_t comma_pos = line.find(',');
+            
+            if (comma_pos != std::string::npos)
+            {
+                const auto fen = line.substr(0, comma_pos);
+                //const auto solution_moves = line.substr(comma_pos + 1);
+                QVERIFY(isValidFEN(QString::fromStdString(fen)));
+            }
+        }
+
+        puzzle_db_fen.close();
+    }
+    else 
+        QVERIFY(false);
 }
 
