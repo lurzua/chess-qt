@@ -47,17 +47,20 @@ void SquareView::paintEvent(QPaintEvent*)
 
 void SquareView::mousePressEvent(QMouseEvent*)
 {
+    m_Logger.log("Clicked on " + m_Pos.toStr().toStdString());
     emit squareClick(m_Pos);
 }
 
 void SquareView::enterEvent(QEnterEvent*)
 {
+    m_Logger.log("Entered " + m_Pos.toStr().toStdString());
     m_Renderer->enter();
     update();
 }
 
 void SquareView::leaveEvent(QEvent*)
 {
+    m_Logger.log("Leave " + m_Pos.toStr().toStdString());
     m_Renderer->leave();
     update();
 }
@@ -154,6 +157,7 @@ void SquareView::setPromoteOptionRenderer(const Color& _team, const Type& _type)
 
 void SquareView::removePiece()
 {
+    m_Logger.log("Remove Piece On " + m_Pos.toStr().toStdString());
     m_SvgFile = QString("");
     setDefaultSquareRenderer();
     update();
@@ -161,6 +165,7 @@ void SquareView::removePiece()
 
 void SquareView::setPiece(const Color& _color, const Type& _type)
 {
+    m_Logger.log("Set Piece On " + m_Pos.toStr().toStdString());
     updateSvgFile(_color, _type);
     setDefaultSquareRenderer();
     update();

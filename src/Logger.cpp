@@ -2,21 +2,19 @@
 #include <sstream>
 
 Logger::Logger(const std::string& _filename)
-    : m_File(_filename, std::ios::app)
+    : m_File(_filename, std::ios::out | std::ios::trunc)
 {
 }
 
 void Logger::log(std::string_view _message, std::source_location _loc)
 {
     std::scoped_lock lock(m_Mutex);
-    //m_File << currentTimeStamp() << " " << _message << std::endl;
     
-    auto now = std::chrono::system_clock::now();
-
-    auto tt = std::chrono::system_clock::to_time_t(now);
-
-    //m_File << std::put_time(std::localtime(&tt), "%F %T") << " [" << std::this_thread::get_id() << "] " << _loc.function_name() << " " << _message << std::endl;
-    m_File << std::put_time(std::localtime(&tt), "%F %T") << _loc.function_name() << " " << _message << std::endl;
+    const auto timestamp = currentTimeStamp();
+    m_File << std::format("{:<20} {:<80} {}\n",
+        timestamp,
+        _loc.function_name(),
+        _message);
 }
 
 std::string Logger::currentTimeStamp()
