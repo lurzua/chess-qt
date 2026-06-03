@@ -28,7 +28,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initBoard()
 {
-    m_BoardView = new BoardView(nullptr);
+    m_BoardView = new BoardView(m_Logger);
 }
 
 void MainWindow::initMoveList()
@@ -49,12 +49,12 @@ void MainWindow::initRootLayout()
 
 void MainWindow::initController()
 {
-    m_Controller = std::make_unique<Controller>(nullptr);
+    m_Controller = std::make_unique<Controller>(m_Logger);
 }
 
 void MainWindow::initModel()
 {
-    m_Model = std::make_unique<Model>(nullptr);
+    m_Model = std::make_unique<Model>(m_Logger);
 }
 
 void MainWindow::initConnections()

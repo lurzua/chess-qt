@@ -21,6 +21,8 @@ add_library(chess_lib
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
+    Logger.cpp
+    Logger.hpp
     Model.cpp
     Model.hpp
     MoveListView.cpp

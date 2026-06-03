@@ -7,11 +7,13 @@
 #include "PromoteDefaultRenderer.hpp"
 #include "PromoteOptionRenderer.hpp"
 #include <QPainter>
+#include "Logger.hpp"
 
-SquareView::SquareView(QWidget* _parent, const Position& _pos, const QColor& _color)
+SquareView::SquareView(QWidget* _parent, const Position& _pos, const QColor& _color, Logger& _logger)
     : QWidget{ _parent }
     , m_Pos(_pos)
     , m_Color(_color)
+    , m_Logger(_logger)
 {
     init();
     initRenderers();

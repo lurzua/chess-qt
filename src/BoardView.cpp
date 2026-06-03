@@ -1,9 +1,11 @@
 #include "BoardView.hpp"
 #include "SquareView.hpp"
 #include <QGridLayout>
+#include "Logger.hpp"
 
-BoardView::BoardView(QWidget* _parent)
-    : QWidget{ _parent }
+BoardView::BoardView(Logger& _logger)
+    : QWidget{ nullptr }
+    , m_Logger(_logger)
 {
     init();
     initGridLayout();
@@ -44,7 +46,7 @@ void BoardView::initSquares()
             const auto pos = Position(col, row);
             const auto [c, r] = pos.toInt();
             const auto color = ((c + r) % 2 != 0) ? QColor("#f0d9b5") : QColor("#b58863");
-            auto* square = new SquareView(m_GridLayout->widget(), pos, color);
+            auto* square = new SquareView(m_GridLayout->widget(), pos, color, m_Logger);
             const auto& [ grid_row , grid_col ] = convertToGridLayout(pos);
             m_GridLayout->addWidget(square, grid_row, grid_col);
         }
