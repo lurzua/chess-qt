@@ -5,6 +5,7 @@
 #include "Position.hpp"
 
 class Piece;
+class Logger;
 
 using ChessMapConst = const std::unordered_map<Position, const Piece*>;
 
@@ -36,7 +37,7 @@ public slots:
 
 public:
 
-    explicit Controller(QObject *parent = nullptr);
+    Controller(Logger&);
 
 private:
 
@@ -56,6 +57,7 @@ private:
     Color m_PlayerTurn = Color::White;
     const Piece* m_CurrentPiece = nullptr;
     std::unordered_map<Position, const Piece*> m_ChessMap;
+    Logger& m_Logger;
 };
 
 #endif

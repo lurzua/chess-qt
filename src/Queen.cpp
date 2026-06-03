@@ -1,7 +1,7 @@
 #include "Queen.hpp"
 
-Queen::Queen(const Position& _pos, const Color& _color)
-    : Piece(_pos, _color, Type::Q)
+Queen::Queen(const Position& _pos, const Color& _color, Logger& _logger)
+    : Piece(_pos, _color, Type::Q, _logger)
 {}
 
 QList<Position> Queen::legalMoves(ChessMapConst& _chessmap) const

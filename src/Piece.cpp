@@ -1,10 +1,12 @@
 #include "Piece.hpp"
 #include <QDebugStateSaver>
+#include "Logger.hpp"
 
-Piece::Piece(const Position& _pos, const Color& _color, const Type& _type)
+Piece::Piece(const Position& _pos, const Color& _color, const Type& _type, Logger& _logger)
     : m_Pos(_pos)
     , m_Color(_color)
     , m_Type(_type)
+    , m_Logger(_logger)
 {
 }
 

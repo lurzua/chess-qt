@@ -60,4 +60,5 @@ notes.txt
 setup-instructions.txt
 git-workflow.txt
 lichess-db-puzzle-fen.csv
+*.log
 

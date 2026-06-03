@@ -8,7 +8,7 @@ class Bishop : public Piece
 
 public:
 
-    Bishop(const Position&, const Color&);
+    Bishop(const Position&, const Color&, Logger&);
     ~Bishop() = default;
     QList<Position> legalMoves(ChessMapConst&) const override;
     QList<Position> legalCaptures(ChessMapConst&) const override;

@@ -5,6 +5,7 @@
 #include "Position.hpp"
 
 class Piece;
+class Logger;
 
 class Model : public QObject
 {
@@ -55,7 +56,7 @@ public slots:
 
 public:
 
-    explicit Model(QObject* _parent = nullptr);
+    Model(Logger&);
     ~Model();
 
 private:
@@ -86,6 +87,7 @@ private:
     std::optional<Position> m_PreviousMoveStart;
     std::optional<Position> m_PreviousMoveEnd;
     //std::unordered_map<QString, uint16_t> m_Fen;
+    Logger& m_Logger;
 };
 
 #endif

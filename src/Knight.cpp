@@ -1,8 +1,8 @@
 #include "Knight.hpp"
 #include <QDebug>
 
-Knight::Knight(const Position& _pos, const Color& _color)
-    : Piece(_pos, _color, Type::N)
+Knight::Knight(const Position& _pos, const Color& _color, Logger& _logger)
+    : Piece(_pos, _color, Type::N, _logger)
 {}
 
 QList<Position> Knight::legalMoves(ChessMapConst& _chessmap) const

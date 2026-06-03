@@ -1,7 +1,7 @@
 #include "Rook.hpp"
 
-Rook::Rook(const Position& _pos, const Color& _color)
-    : Piece(_pos, _color, Type::R)
+Rook::Rook(const Position& _pos, const Color& _color, Logger& _logger)
+    : Piece(_pos, _color, Type::R, _logger)
 {}
 
 QList<Position> Rook::legalMoves(ChessMapConst& _chessmap) const

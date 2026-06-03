@@ -1,7 +1,7 @@
 #include "Bishop.hpp"
 
-Bishop::Bishop(const Position& _pos, const Color& _color)
-    : Piece(_pos, _color, Type::B)
+Bishop::Bishop(const Position& _pos, const Color& _color, Logger& _logger)
+    : Piece(_pos, _color, Type::B, _logger)
 {}
 
 QList<Position> Bishop::legalMoves(ChessMapConst& _chessmap) const

@@ -3,8 +3,9 @@
 #include <QEvent>
 #include <QDebug>
 
-Controller::Controller(QObject* _parent)
-    : QObject{ _parent }
+Controller::Controller(Logger& _logger)
+    : QObject{ nullptr }
+    , m_Logger(_logger)
 {}
 
 void Controller::receiveChessMap(ChessMapConst& _map)

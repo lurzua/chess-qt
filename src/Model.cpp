@@ -6,9 +6,11 @@
 #include "Bishop.hpp"
 #include "Knight.hpp"
 #include "Pawn.hpp"
+#include "Logger.hpp"
 
-Model::Model(QObject* _parent)
-    : QObject{ _parent }
+Model::Model(Logger& _logger)
+    : QObject{ nullptr }
+    , m_Logger(_logger)
 {
     initChessMap();
     initPieces();
@@ -37,22 +39,22 @@ void Model::initPieces()
         {
 
         case Type::P:
-            m_Pieces.push_back(new Pawn(pos, color));
+            m_Pieces.push_back(new Pawn(pos, color, m_Logger));
             break;
         case Type::N:
-            m_Pieces.push_back(new Knight(pos, color));
+            m_Pieces.push_back(new Knight(pos, color, m_Logger));
             break;
         case Type::B:
-            m_Pieces.push_back(new Bishop(pos, color));
+            m_Pieces.push_back(new Bishop(pos, color, m_Logger));
             break;
         case Type::R:
-            m_Pieces.push_back(new Rook(pos, color));
+            m_Pieces.push_back(new Rook(pos, color, m_Logger));
             break;
         case Type::Q:
-            m_Pieces.push_back(new Queen(pos, color));
+            m_Pieces.push_back(new Queen(pos, color, m_Logger));
             break;
         case Type::K:
-            m_Pieces.push_back(new King(pos, color));
+            m_Pieces.push_back(new King(pos, color, m_Logger));
             break;
 
         }
@@ -262,7 +264,7 @@ void Model::receiveRequestPawnPromoteToQueen(const Position& _pawn_pos)
             return p->getPosition() == _pawn_pos;
         }), m_Pieces.end());
     m_ChessMap.at(_pawn_pos) = nullptr;
-    m_Pieces.push_back(new Queen(_pawn_pos, pawn_color));
+    m_Pieces.push_back(new Queen(_pawn_pos, pawn_color, m_Logger));
     m_ChessMap.at(m_Pieces.back()->getPosition()) = m_Pieces.back();
     updateChessBoard();
     emit requestToRecordPawnPromotion(getAlgebraicNotationPawnPromotion(_pawn_pos), pawn_color);
@@ -283,7 +285,7 @@ void Model::receiveRequestPawnPromoteToKnight(const Position& _pawn_pos)
             return p->getPosition() == _pawn_pos;
         }), m_Pieces.end());
     m_ChessMap.at(_pawn_pos) = nullptr;
-    m_Pieces.push_back(new Knight(_pawn_pos, pawn_color));
+    m_Pieces.push_back(new Knight(_pawn_pos, pawn_color, m_Logger));
     m_ChessMap.at(m_Pieces.back()->getPosition()) = m_Pieces.back();
     updateChessBoard();
     emit requestToRecordPawnPromotion(getAlgebraicNotationPawnPromotion(_pawn_pos), pawn_color);
@@ -304,7 +306,7 @@ void Model::receiveRequestPawnPromoteToRook(const Position& _pawn_pos)
             return p->getPosition() == _pawn_pos;
         }), m_Pieces.end());
     m_ChessMap.at(_pawn_pos) = nullptr;
-    m_Pieces.push_back(new Rook(_pawn_pos, pawn_color));
+    m_Pieces.push_back(new Rook(_pawn_pos, pawn_color, m_Logger));
     m_ChessMap.at(m_Pieces.back()->getPosition()) = m_Pieces.back();
     updateChessBoard();
     emit requestToRecordPawnPromotion(getAlgebraicNotationPawnPromotion(_pawn_pos), pawn_color);
@@ -325,7 +327,7 @@ void Model::receiveRequestPawnPromoteToBishop(const Position& _pawn_pos)
             return p->getPosition() == _pawn_pos;
         }), m_Pieces.end());
     m_ChessMap.at(_pawn_pos) = nullptr;
-    m_Pieces.push_back(new Bishop(_pawn_pos, pawn_color));
+    m_Pieces.push_back(new Bishop(_pawn_pos, pawn_color, m_Logger));
     m_ChessMap.at(m_Pieces.back()->getPosition()) = m_Pieces.back();
     updateChessBoard();
     emit requestToRecordPawnPromotion(getAlgebraicNotationPawnPromotion(_pawn_pos), pawn_color);

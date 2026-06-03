@@ -1,7 +1,7 @@
 #include "Pawn.hpp"
 
-Pawn::Pawn(const Position& _pos, const Color& _color)
-    : Piece(_pos, _color, Type::P)
+Pawn::Pawn(const Position& _pos, const Color& _color, Logger& _logger)
+    : Piece(_pos, _color, Type::P, _logger)
 {
 }
 

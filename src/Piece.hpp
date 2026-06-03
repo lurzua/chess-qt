@@ -4,13 +4,15 @@
 #include "Position.hpp"
 #include <QList>
 
+class Logger;
+
 class Piece
 {
 public:
 
     using ChessMapConst = const std::unordered_map<Position, const Piece*>;
 
-    Piece(const Position&, const Color&, const Type&);
+    Piece(const Position&, const Color&, const Type&, Logger&);
     virtual ~Piece() = default;
     Position getPosition() const;
     Color getColor() const;
@@ -45,6 +47,7 @@ protected:
     Type m_Type;
     inline static std::pair<Position, Position> m_PreviousMove = { Position(Col::A, Row::One), Position(Col::A, Row::One )};
     bool m_PieceMoved = false;
+    Logger& m_Logger;
 };
 
 #endif
