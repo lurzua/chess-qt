@@ -8,7 +8,7 @@ class Pawn : public Piece
 
 public:
 
-    Pawn(const Position&, const Color&, Logger&);
+    Pawn(const Position&, const Color&);
     ~Pawn() = default;
     QList<Position> legalMoves(ChessMapConst&) const override;
     QList<Position> legalCaptures(ChessMapConst&) const override;

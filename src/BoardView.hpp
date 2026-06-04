@@ -7,7 +7,6 @@
 
 class SquareView;
 class Piece;
-class Logger;
 
 class BoardView : public QWidget
 {
@@ -31,7 +30,7 @@ public slots:
 
 public:
 
-    BoardView(Logger&);
+    BoardView();
     ~BoardView();
 
 private:
@@ -45,7 +44,6 @@ private:
 
     std::unordered_map<Position, SquareView* const> m_Squares;
     QGridLayout* m_GridLayout;
-    Logger& m_Logger;
 };
 
 #endif

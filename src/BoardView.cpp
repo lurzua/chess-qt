@@ -1,11 +1,10 @@
 #include "BoardView.hpp"
 #include "SquareView.hpp"
 #include <QGridLayout>
-#include "Logger.hpp"
+#include "Log.hpp"
 
-BoardView::BoardView(Logger& _logger)
+BoardView::BoardView()
     : QWidget{ nullptr }
-    , m_Logger(_logger)
 {
     init();
     initGridLayout();
@@ -20,6 +19,7 @@ BoardView::~BoardView()
 
 void BoardView::init()
 {
+    LOG_TRACE("BoardView Initialize");
     setObjectName("BoardView");
     const auto min = QSize(600, 600);
     const auto max = QSize(1000, 1000);
@@ -39,6 +39,7 @@ void BoardView::initGridLayout()
 
 void BoardView::initSquares()
 {
+    LOG_TRACE("BoardView Initialize SquareView");
     for (const auto& row : g_ArrayRow)
     {
         for (const auto& col : g_ArrayCol)
@@ -46,7 +47,7 @@ void BoardView::initSquares()
             const auto pos = Position(col, row);
             const auto [c, r] = pos.toInt();
             const auto color = ((c + r) % 2 != 0) ? QColor("#f0d9b5") : QColor("#b58863");
-            auto* square = new SquareView(m_GridLayout->widget(), pos, color, m_Logger);
+            auto* square = new SquareView(m_GridLayout->widget(), pos, color);
             const auto& [ grid_row , grid_col ] = convertToGridLayout(pos);
             m_GridLayout->addWidget(square, grid_row, grid_col);
         }
@@ -67,6 +68,7 @@ void BoardView::initSquares()
 
 void BoardView::initConnections()
 {
+    LOG_TRACE("BoardView Connect Signals/Slots");
     for (const auto& [ pos, square ] : m_Squares)
         connect(square, &SquareView::squareClick, this, &BoardView::receiveClickOnSquare);
 }

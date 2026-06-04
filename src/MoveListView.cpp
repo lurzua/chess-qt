@@ -2,11 +2,9 @@
 #include <QHeaderView>
 #include <QFontDatabase>
 #include <QLabel>
-#include "Logger.hpp"
 
-MoveListView::MoveListView(Logger& _logger)
+MoveListView::MoveListView()
     : QTableWidget { nullptr }
-    , m_Logger(_logger)
 {
     init();
     initRowsAndColumns();

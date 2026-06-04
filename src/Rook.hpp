@@ -8,7 +8,7 @@ class Rook : public Piece
 
 public:
 
-    Rook(const Position&, const Color&, Logger&);
+    Rook(const Position&, const Color&);
     ~Rook() = default;
     QList<Position> legalMoves(ChessMapConst&) const override;
     QList<Position> legalCaptures(ChessMapConst&) const override;

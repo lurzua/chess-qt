@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QSvgWidget>
 #include <QHBoxLayout>
-#include "Logger.hpp"
 
 class BoardView;
 class Controller;
@@ -29,6 +28,7 @@ public:
 
 private:
 
+    void initLogger();
     void initBoard();
     void initMoveList();
     void initRootLayout();
@@ -42,7 +42,6 @@ private:
     QHBoxLayout* m_HboxRootLayout;
     std::unique_ptr<Controller> m_Controller;
     std::unique_ptr<Model> m_Model;
-    Logger m_Logger = Logger("app.log");
 };
 
 #endif

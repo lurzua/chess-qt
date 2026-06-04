@@ -5,9 +5,9 @@
 #include "Position.hpp"
 
 class Piece;
-class Logger;
 
 using ChessMapConst = const std::unordered_map<Position, const Piece*>;
+enum class PlayerTurnState { SelectPiece, SelectDestination, PawnPromotion };
 
 class Controller : public QObject
 {
@@ -37,7 +37,7 @@ public slots:
 
 public:
 
-    Controller(Logger&);
+    Controller();
 
 private:
 
@@ -52,13 +52,27 @@ private:
 
 private:
 
-    enum class PlayerTurnState { SelectPiece, SelectDestination, PawnPromotion };
     PlayerTurnState  m_PlayerTurnState = PlayerTurnState::SelectPiece;
     Color m_PlayerTurn = Color::White;
     const Piece* m_CurrentPiece = nullptr;
     std::unordered_map<Position, const Piece*> m_ChessMap;
-    Logger& m_Logger;
 };
+
+
+constexpr std::string_view to_string(PlayerTurnState _state)
+{
+    switch (_state)
+    {
+        case PlayerTurnState::SelectPiece:
+            return "SELECT_PIECE";
+        case PlayerTurnState::SelectDestination:
+            return "SELECT_DESTINATION";
+        case PlayerTurnState::PawnPromotion:
+            return "PAWN_PROMOTION";
+        default:
+            return "UnknownState";
+    }
+}
 
 #endif
 

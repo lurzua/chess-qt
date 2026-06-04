@@ -21,8 +21,8 @@ add_library(chess_lib
     mainwindow.cpp
     mainwindow.h
     mainwindow.ui
-    Logger.cpp
-    Logger.hpp
+    Log.cpp
+    Log.hpp
     Model.cpp
     Model.hpp
     MoveListView.cpp
@@ -57,6 +57,7 @@ target_link_libraries(chess_lib
         Qt6::Gui
         Qt6::Widgets
         Qt6::SvgWidgets
+        spdlog::spdlog
 )
 
 target_include_directories(chess_lib

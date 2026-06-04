@@ -8,7 +8,7 @@ class Queen : public Piece
 
 public:
 
-    Queen(const Position&, const Color&, Logger&);
+    Queen(const Position&, const Color&);
     ~Queen() = default;
     QList<Position> legalMoves(ChessMapConst&) const override;
     QList<Position> legalCaptures(ChessMapConst&) const override;

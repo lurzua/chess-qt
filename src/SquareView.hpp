@@ -14,7 +14,6 @@ class PotentialSquareRenderer;
 class KingJaqueRenderer;
 class PromoteDefaultRenderer;
 class PromoteOptionRenderer;
-class Logger;
 
 class SquareView : public QWidget
 {
@@ -34,7 +33,7 @@ protected:
 
 public:
 
-    SquareView(QWidget*, const Position&, const QColor&, Logger&);
+    SquareView(QWidget*, const Position&, const QColor&);
     ~SquareView();
     Position getPosition() const;
     void initRenderers();
@@ -58,7 +57,6 @@ private:
     const QColor m_Color;
     std::unique_ptr<IRenderer> m_Renderer;
     QString m_SvgFile;
-    Logger& m_Logger;
 };
 
 #endif // SQUAREVIEW_H

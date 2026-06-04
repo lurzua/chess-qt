@@ -8,7 +8,7 @@ class Knight : public Piece
 
 public:
 
-    Knight(const Position&, const Color&, Logger&);
+    Knight(const Position&, const Color&);
     ~Knight() = default;
     QList<Position> legalMoves(ChessMapConst&) const override;
     QList<Position> legalCaptures(ChessMapConst&) const override;

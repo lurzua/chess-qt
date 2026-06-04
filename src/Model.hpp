@@ -5,7 +5,6 @@
 #include "Position.hpp"
 
 class Piece;
-class Logger;
 
 class Model : public QObject
 {
@@ -56,7 +55,7 @@ public slots:
 
 public:
 
-    Model(Logger&);
+    Model();
     ~Model();
 
 private:
@@ -74,7 +73,7 @@ private:
     QString getAlgebraicNotationNormalCapture(const Position&, const Position&);
     QString getAlgebraicNotationCastling(const Position&);
     QString getAlgebraicNotationPawnPromotion(const Position&);
-    //QString convertChessMapToFen() const;
+    QString convertChessMapToFen() const;
     //bool isThreefoldRepetition() const;
     //How to implement 3-fold repetition?
     //Use FEN strings uniqueness OR use Zobrist Hashing
@@ -87,7 +86,6 @@ private:
     std::optional<Position> m_PreviousMoveStart;
     std::optional<Position> m_PreviousMoveEnd;
     //std::unordered_map<QString, uint16_t> m_Fen;
-    Logger& m_Logger;
 };
 
 #endif

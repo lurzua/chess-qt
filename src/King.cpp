@@ -1,8 +1,8 @@
 #include "King.hpp"
 #include <QDebug>
 
-King::King(const Position& _pos, const Color& _color, Logger& _logger)
-    : Piece(_pos, _color, Type::K, _logger)
+King::King(const Position& _pos, const Color& _color)
+    : Piece(_pos, _color, Type::K)
 {}
 
 QList<Position> King::legalMoves(ChessMapConst& _chessmap) const

@@ -21,6 +21,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     SvgWidgets
     Test
 )
+find_package(spdlog REQUIRED)
 
 enable_testing()
 

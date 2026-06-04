@@ -1,11 +1,11 @@
 #include "Controller.hpp"
 #include "Piece.hpp"
+#include "Log.hpp"
 #include <QEvent>
 #include <QDebug>
 
-Controller::Controller(Logger& _logger)
+Controller::Controller()
     : QObject{ nullptr }
-    , m_Logger(_logger)
 {
     setObjectName("Controller");
 }
@@ -17,11 +17,14 @@ void Controller::receiveChessMap(ChessMapConst& _map)
 
 void Controller::nextPlayerTurn()
 {
+    LOG_TRACE("Next player turn {0}", to_string(m_PlayerTurn));
     m_PlayerTurn = !m_PlayerTurn;
 }
 
 void Controller::receiveClickedOnChessboard(const Position& _selected_square)
 {
+    LOG_TRACE("Player {0}, GameState [ {1} ]", to_string(m_PlayerTurn), to_string(m_PlayerTurnState));
+
     switch (m_PlayerTurnState)
     {
 
@@ -161,21 +164,26 @@ void Controller::processGameStatePawnPromotion(const Position& _selected_promote
             switch (option)
             {
                 case Type::Q:
+                    LOG_TRACE("Pawn Promote To QUEEN");
                     emit requestPawnPromoteToQueen(pawn_pos);
                     break;
                 case Type::N:
+                    LOG_TRACE("Pawn Promote To KNIGHT");
                     emit requestPawnPromoteToKnight(pawn_pos);
                     break;
                 case Type::R:
+                    LOG_TRACE("Pawn Promote To ROOK");
                     emit requestPawnPromoteToRook(pawn_pos);
                     break;
                 case Type::B:
+                    LOG_TRACE("Pawn Promote To BISHOP");
                     emit requestPawnPromoteToBishop(pawn_pos);
                     break;
 
                 // Can't Promote To Pawn or King
                 case Type::P:
                 case Type::K:
+                    LOG_CRITICAL("Pawn Promote To PAWN or KING");
                     Q_UNREACHABLE();
                     break;
             }

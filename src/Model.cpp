@@ -6,11 +6,10 @@
 #include "Bishop.hpp"
 #include "Knight.hpp"
 #include "Pawn.hpp"
-#include "Logger.hpp"
+#include "Log.hpp"
 
-Model::Model(Logger& _logger)
+Model::Model()
     : QObject{ nullptr }
-    , m_Logger(_logger)
 {
     setObjectName("Model");
     initChessMap();
@@ -24,6 +23,8 @@ Model::~Model()
 
 void Model::initChessMap()
 {
+    LOG_TRACE("Initialize Model");
+
     for (const auto& r : g_ArrayRow)
     {
         for (const auto& c : g_ArrayCol)
@@ -33,6 +34,8 @@ void Model::initChessMap()
 
 void Model::initPieces()
 {
+    LOG_TRACE("Initialize Pieces");
+
     for (const auto& [ col, row, color, type ] : g_StartingPieces)
     {
         const auto pos = Position(col, row);
@@ -40,22 +43,22 @@ void Model::initPieces()
         {
 
         case Type::P:
-            m_Pieces.push_back(new Pawn(pos, color, m_Logger));
+            m_Pieces.push_back(new Pawn(pos, color));
             break;
         case Type::N:
-            m_Pieces.push_back(new Knight(pos, color, m_Logger));
+            m_Pieces.push_back(new Knight(pos, color));
             break;
         case Type::B:
-            m_Pieces.push_back(new Bishop(pos, color, m_Logger));
+            m_Pieces.push_back(new Bishop(pos, color));
             break;
         case Type::R:
-            m_Pieces.push_back(new Rook(pos, color, m_Logger));
+            m_Pieces.push_back(new Rook(pos, color));
             break;
         case Type::Q:
-            m_Pieces.push_back(new Queen(pos, color, m_Logger));
+            m_Pieces.push_back(new Queen(pos, color));
             break;
         case Type::K:
-            m_Pieces.push_back(new King(pos, color, m_Logger));
+            m_Pieces.push_back(new King(pos, color));
             break;
 
         }
@@ -90,6 +93,9 @@ void Model::receiveRequestOverlayReset()
 
 void Model::receiveRequestOverlayUpdateWithPieceOptions(const Position& _selected_piece)
 {
+    const auto* p = getChessMapConst().at(_selected_piece);
+    const auto& [ p_color, p_type, p_pos ] = std::make_tuple(to_string(p->getColor()), to_string(p->getType()), p->getPosition().toStr().toStdString());
+    LOG_TRACE("Select Piece: {0} {1} @ {2}", p_color, p_type, p_pos);
     const auto chessmap_const = getChessMapConst();
     emit requestSetSelectedPieceRenderer(_selected_piece);
     if (const auto piece = chessmap_const.at(_selected_piece))
@@ -99,11 +105,16 @@ void Model::receiveRequestOverlayUpdateWithPieceOptions(const Position& _selecte
             emit requestSetPotentialMoveRenderer(square);
     }
     else 
+    {
+        LOG_CRITICAL("Piece Selected is EMPTY");
         Q_UNREACHABLE();
+    }
 }
 
 void Model::receiveRequestChessMapUpdateNormalMove(const Position& _start, const Position& _end)
 {
+    const auto* p = getChessMapConst().at(_start);
+    LOG_TRACE("Normal Move: {0} {1} to {2}", to_string(p->getColor()), to_string(p->getType()), p->getPosition().toStr().toStdString());
     m_PreviousMoveStart = _start;
     m_PreviousMoveEnd = _end;
     auto* pieceToMove = m_ChessMap.at(_start);
@@ -122,6 +133,11 @@ void Model::receiveRequestChessMapUpdateNormalMove(const Position& _start, const
 
 void Model::receiveRequestChessMapUpdateNormalCapture(const Position& _start, const Position& _end)
 {
+    const auto* pa = getChessMapConst().at(_start);
+    const auto& [ a_color, a_type, a_pos ] = std::make_tuple(to_string(pa->getColor()), to_string(pa->getType()), pa->getPosition().toStr().toStdString());
+    const auto* pb = getChessMapConst().at(_end);
+    const auto& [ b_color, b_type, b_pos ] = std::make_tuple(to_string(pa->getColor()), to_string(pb->getType()), pb->getPosition().toStr().toStdString());
+    LOG_TRACE("Normal Capture: {0} {1} @ {2} captures {3} {4} @ {5}", a_color, a_type, a_pos, b_color, b_type, b_pos);
     m_PreviousMoveStart = _start;
     m_PreviousMoveEnd = _end;
     m_Pieces.erase(std::remove_if(m_Pieces.begin(), m_Pieces.end(),
@@ -265,7 +281,7 @@ void Model::receiveRequestPawnPromoteToQueen(const Position& _pawn_pos)
             return p->getPosition() == _pawn_pos;
         }), m_Pieces.end());
     m_ChessMap.at(_pawn_pos) = nullptr;
-    m_Pieces.push_back(new Queen(_pawn_pos, pawn_color, m_Logger));
+    m_Pieces.push_back(new Queen(_pawn_pos, pawn_color));
     m_ChessMap.at(m_Pieces.back()->getPosition()) = m_Pieces.back();
     updateChessBoard();
     emit requestToRecordPawnPromotion(getAlgebraicNotationPawnPromotion(_pawn_pos), pawn_color);
@@ -286,7 +302,7 @@ void Model::receiveRequestPawnPromoteToKnight(const Position& _pawn_pos)
             return p->getPosition() == _pawn_pos;
         }), m_Pieces.end());
     m_ChessMap.at(_pawn_pos) = nullptr;
-    m_Pieces.push_back(new Knight(_pawn_pos, pawn_color, m_Logger));
+    m_Pieces.push_back(new Knight(_pawn_pos, pawn_color));
     m_ChessMap.at(m_Pieces.back()->getPosition()) = m_Pieces.back();
     updateChessBoard();
     emit requestToRecordPawnPromotion(getAlgebraicNotationPawnPromotion(_pawn_pos), pawn_color);
@@ -307,7 +323,7 @@ void Model::receiveRequestPawnPromoteToRook(const Position& _pawn_pos)
             return p->getPosition() == _pawn_pos;
         }), m_Pieces.end());
     m_ChessMap.at(_pawn_pos) = nullptr;
-    m_Pieces.push_back(new Rook(_pawn_pos, pawn_color, m_Logger));
+    m_Pieces.push_back(new Rook(_pawn_pos, pawn_color));
     m_ChessMap.at(m_Pieces.back()->getPosition()) = m_Pieces.back();
     updateChessBoard();
     emit requestToRecordPawnPromotion(getAlgebraicNotationPawnPromotion(_pawn_pos), pawn_color);
@@ -328,7 +344,7 @@ void Model::receiveRequestPawnPromoteToBishop(const Position& _pawn_pos)
             return p->getPosition() == _pawn_pos;
         }), m_Pieces.end());
     m_ChessMap.at(_pawn_pos) = nullptr;
-    m_Pieces.push_back(new Bishop(_pawn_pos, pawn_color, m_Logger));
+    m_Pieces.push_back(new Bishop(_pawn_pos, pawn_color));
     m_ChessMap.at(m_Pieces.back()->getPosition()) = m_Pieces.back();
     updateChessBoard();
     emit requestToRecordPawnPromotion(getAlgebraicNotationPawnPromotion(_pawn_pos), pawn_color);
@@ -629,5 +645,12 @@ QString Model::getAlgebraicNotationPawnPromotion(const Position& _promoted_piece
     algebraic += QChar(piece->getUnicode());
 
     return algebraic;
+}
+
+QString Model::convertChessMapToFen() const
+{
+    QString fen;
+
+    return fen;
 }
 

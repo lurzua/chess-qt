@@ -4,6 +4,7 @@
 #include "Controller.hpp"
 #include "Model.hpp"
 #include "MoveListView.hpp"
+#include "Log.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -11,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     m_UI->setupUi(this);
 
+    initLogger();
     initBoard();
     initMoveList();
     initRootLayout();
@@ -26,14 +28,20 @@ MainWindow::~MainWindow()
     delete m_MoveListView;
 }
 
+void MainWindow::initLogger()
+{
+    // Must be called before it's used.
+    Log::init();
+}
+
 void MainWindow::initBoard()
 {
-    m_BoardView = new BoardView(m_Logger);
+    m_BoardView = new BoardView();
 }
 
 void MainWindow::initMoveList()
 {
-    m_MoveListView = new MoveListView(m_Logger);
+    m_MoveListView = new MoveListView();
 }
 
 void MainWindow::initRootLayout()
@@ -49,12 +57,12 @@ void MainWindow::initRootLayout()
 
 void MainWindow::initController()
 {
-    m_Controller = std::make_unique<Controller>(m_Logger);
+    m_Controller = std::make_unique<Controller>();
 }
 
 void MainWindow::initModel()
 {
-    m_Model = std::make_unique<Model>(m_Logger);
+    m_Model = std::make_unique<Model>();
 }
 
 void MainWindow::initConnections()
